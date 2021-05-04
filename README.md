@@ -1,3 +1,4 @@
+Forked because of global exception on communication problems
 # bonjour
 
 A Bonjour/Zeroconf protocol implementation in pure JavaScript. Publish

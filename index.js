@@ -3,14 +3,21 @@
 var Registry = require('./lib/registry')
 var Server = require('./lib/mdns-server')
 var Browser = require('./lib/browser')
+var util = require('util')
+var EventEmitter = require('events').EventEmitter
 
 module.exports = Bonjour
 
+util.inherits(Bonjour, EventEmitter)
 function Bonjour (opts) {
   if (!(this instanceof Bonjour)) return new Bonjour(opts)
-  this._server = new Server(opts)
+  this._server = new Server(opts, onError(this))
   this._registry = new Registry(this._server)
 }
+
+function onError(that){ return function(err){
+  that.emit("error", err);
+};}
 
 Bonjour.prototype.publish = function (opts) {
   return this._registry.publish(opts)
